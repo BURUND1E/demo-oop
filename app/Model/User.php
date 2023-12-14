@@ -4,6 +4,7 @@ namespace Model;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Src\Auth\IdentityInterface;
 
 class User extends Model implements IdentityInterface
@@ -13,8 +14,10 @@ class User extends Model implements IdentityInterface
     public $timestamps = false;
     protected $fillable = [
         'name',
+        'id_role',
         'login',
-        'password'
+        'password',
+        'cover',
     ];
 
     protected static function booted()
@@ -24,8 +27,6 @@ class User extends Model implements IdentityInterface
             $user->save();
         });
     }
-
-    //Выборка пользователя по первичному ключу
     public function findIdentity(int $id)
     {
         return self::where('id', $id)->first();
@@ -43,5 +44,17 @@ class User extends Model implements IdentityInterface
         return self::where(['login' => $credentials['login'],
             'password' => md5($credentials['password'])])->first();
     }
+
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class, 'id_role', 'id');
+    }
+
+    //Есть ли роль текущего пользователя в массиве ролей
+    public function hasRole($roles): bool
+    {
+        return in_array($this->role->name_role, $roles);
+    }
+
 }
 
