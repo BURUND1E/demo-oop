@@ -8,8 +8,9 @@
     <!--    Для линукса-->
     <!--    <link rel="stylesheet" href="/docs/public/static/style.css" type="text/css">-->
     <!--    Для винды-->
-    <link rel="stylesheet" href="../../public/static/style.css" type="text/css">
-    <title>Pop it MVC</title>
+    <link rel="stylesheet" href="../../../demo-oop/public/static/style.css" type="text/css">
+    <title>MVC</title>
+    <script defer src="/demo-oop/public/script.js"></script>
 </head>
 <body>
 

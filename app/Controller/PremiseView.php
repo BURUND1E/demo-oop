@@ -16,12 +16,15 @@ class PremiseView
 
         $subdivisions = Subdivision::all();
         if ($request->method === "POST") {
+            $payload = $request->all();
 
-            if ($request->sort === "name") {
-                $premises_list = Premise::orderBy('name')->get();
-            } else if ($request->sort === 'number') {
-                $premises_list = Premise::orderBy('number')->get();
-            } else if ($request->search) {
+            if(isset($payload['sort'])) {
+                if ($request->sort === "name") {
+                    $premises_list = Premise::orderBy('name')->get();
+                } else if ($request->sort === 'number') {
+                    $premises_list = Premise::orderBy('number')->get();
+                }
+            } else if(isset($payload['search'])) {
                 $premises_list = Premise::where('name', 'like', '%' . $request->search . '%')->get();
             }
         } else {
@@ -42,7 +45,7 @@ class PremiseView
             $validator = new Validator($request->all(), [
                 'name' => ['required'],
                 'number' => ['required', 'number'],
-                'number_of_seates' => ['required', 'number'],
+                'number_seates' => ['required', 'number'],
                 'square' => ['required', 'number'],
             ], [
                 'required' => 'Поле :field пусто',
@@ -75,7 +78,7 @@ class PremiseView
             $updatePremise = [
                 'name' => $request->get('name'),
                 'number' => $request->get('number'),
-                'number_of_seates' => $request->get('number_of_seates'),
+                'number_seates' => $request->get('number_seates'),
                 'square' => $request->get('square'),
                 'id_subdivision' => $request->get('id_subdivision'),
                 'id_type' => $request->get('id_type'),
